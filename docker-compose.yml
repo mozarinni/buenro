@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: buenro-mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=buenro-data
+    networks:
+      - buenro-network
+
+  # Uncomment to include the backend application in Docker
+  # app:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: buenro-backend
+  #   ports:
+  #     - '3000:3000'
+  #   depends_on:
+  #     - mongo
+  #   environment:
+  #     - NODE_ENV=development
+  #     - MONGODB_URI=mongodb://mongo:27017/buenro-data
+  #     - AWS_REGION=eu-north-1
+  #     - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  #     - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  #   networks:
+  #     - buenro-network
+
+networks:
+  buenro-network:
+    driver: bridge
+
+volumes:
+  mongo_data: 
